@@ -14,7 +14,7 @@ module EmberCli
     end
 
     def build(watch: false)
-      "#{ember_build(watch: watch)} | #{tee}"
+      ember_build(watch: watch)
     end
 
     private
@@ -25,10 +25,8 @@ module EmberCli
       options.fetch(:watcher) { EmberCli.configuration.watcher }
     end
 
-    def tee
-      Cocaine::CommandLine.
-        new(paths.tee, "-a :log").
-        command(log: paths.log)
+    def silent?
+      options.fetch(:silent) { false }
     end
 
     def ember_build(watch: false)
@@ -36,6 +34,7 @@ module EmberCli
         "build",
         ("--watch" if watch),
         ("--watcher :watcher" if process_watcher),
+        ("--silent" if silent?),
         "--environment :environment",
         "--output-path :output_path",
       ].compact.join(" "))

@@ -1,6 +1,29 @@
 master
 ------
 
+0.7.4
+-----
+
+* Fix dependencies check for compile command. [#455]
+* Introduce the `silent` configuration value. [#445]
+
+[#455]: https://github.com/thoughtbot/ember-cli-rails/pull/455
+[#445]: https://github.com/thoughtbot/ember-cli-rails/pull/445
+
+0.7.3
+-----
+
+* Stream output instead of waiting until subprocesses finish. [#423]
+* Update `ember-cli-rails-assets` dependency. [#422]
+* Only write errors to `STDERR`. [#421]
+* Remove dependency on `tee`. Fixes bug [#417]. [#420]
+
+[#423]: https://github.com/thoughtbot/ember-cli-rails/pull/423
+[#422]: https://github.com/thoughtbot/ember-cli-rails/pull/422
+[#421]: https://github.com/thoughtbot/ember-cli-rails/issues/421
+[#420]: https://github.com/thoughtbot/ember-cli-rails/issues/420
+[#417]: https://github.com/thoughtbot/ember-cli-rails/issues/417
+
 0.7.2
 -----
 

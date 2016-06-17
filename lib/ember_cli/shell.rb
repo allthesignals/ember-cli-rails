@@ -57,20 +57,20 @@ module EmberCli
     delegate :run, :run!, to: :runner
 
     def invalid_ember_dependencies?
-      !run("#{paths.ember} version")
+      !run("#{paths.ember} version").success?
     rescue DependencyError
       false
     end
 
     def clean_ember_dependencies!
-      ember_dependency_directories.select(&:exist?).each(&:rmtree)
+      ember_dependency_directories.flat_map(&:children).each(&:rmtree)
     end
 
     def ember_dependency_directories
       [
         paths.node_modules,
         paths.bower_components,
-      ]
+      ].select(&:exist?)
     end
 
     def spawn(command)
@@ -85,8 +85,8 @@ module EmberCli
     def runner
       Runner.new(
         options: { chdir: paths.root.to_s },
-        out: paths.log,
-        err: $stderr,
+        out: [$stdout, paths.log.open("a")],
+        err: [$stderr],
         env: env,
       )
     end

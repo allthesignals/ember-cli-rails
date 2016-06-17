@@ -18,13 +18,6 @@ describe EmberCli::Command do
       expect(command.build).to match(%r{path\/to\/ember build})
     end
 
-    it "pipes to `tee`" do
-      paths = build_paths(tee: "path/to/tee", log: "path/to/log")
-      command = build_command(paths: paths)
-
-      expect(command.build).to match(%r{\| path/to/tee -a 'path/to/log'})
-    end
-
     context "when building in production" do
       it "includes the `--environment production` flag" do
         paths = build_paths
@@ -58,6 +51,29 @@ describe EmberCli::Command do
         command = build_command(paths: paths)
 
         expect(command.build).not_to match(/--watch/)
+      end
+    end
+
+    context "when configured not to be silent" do
+      it "exludes the `--silent` flag" do
+        paths = build_paths
+        command = build_command(paths: paths)
+
+        expect(command.build).not_to match(/--silent/)
+
+        paths = build_paths
+        command = build_command(paths: paths, options: { silent: false })
+
+        expect(command.build).not_to match(/--silent/)
+      end
+    end
+
+    context "when configured to be silent" do
+      it "includes `--silent` flag" do
+        paths = build_paths
+        command = build_command(paths: paths, options: { silent: true })
+
+        expect(command.build).to match(/--silent/)
       end
     end
 
